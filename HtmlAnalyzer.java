@@ -7,6 +7,42 @@ import java.util.*;
 final public class HtmlAnalyzer {
     public static void main(String[] args) {
 
+    private static String handle(String url) {
+        Fetcher fetcher = new Fetcher(url);
+        fetcher.fetch();
+
+        Optional<String> body = fetcher.getValue();
+
+        if (body.isEmpty()) return ErrorResponse.HttpError.getMessage();
+
+        String html = body.get();
+        List<String> lines = html.lines().toList();
+
+        DomTracker tracker = new DomTracker();
+
+        int maxDepth = 0;
+        String deepestText = "";
+
+        for (String line : lines) {
+            String lineContent = line.strip();
+
+            if (Tag.isTag(lineContent)) {
+                Tag tag = Tag.parse(lineContent);
+                tracker.track(tag);
+                continue;
+            }
+
+            int depth = tracker.stackedTags();
+
+            if (depth > maxDepth) {
+                deepestText = lineContent.strip();
+                maxDepth = depth;
+            }
+        }
+
+        if (!tracker.domIsWellFormed()) return ErrorResponse.HTMLError.getMessage();
+
+        return deepestText;
     }
 }
 
