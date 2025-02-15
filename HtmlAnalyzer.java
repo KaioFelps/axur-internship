@@ -4,8 +4,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
 
-final public class HtmlAnalyzer {
+public final class HtmlAnalyzer {
     public static void main(String[] args) {
+        String url = args[0];
+        String value = HtmlAnalyzer.handle(url);
+        System.out.println(value);
+    }
 
     private static String handle(String url) {
         Fetcher fetcher = new Fetcher(url);
