@@ -11,8 +11,27 @@ final public class HtmlAnalyzer {
 }
 
 class Tag {
-    private String value;
-    private TagType type;
+    private final String value;
+    private final TagType type;
+
+    private Tag(String value, TagType type) {
+        this.value = value;
+        this.type = type;
+    }
+
+    public static Tag parse(String tagString) {
+        if (tagString.startsWith("</")) {
+            String tagValue = tagString.substring(2, tagString.length() -1);
+            return new Tag(tagValue, TagType.Closing);
+        }
+
+        String tagValue = tagString.substring(1, tagString.length() -1);
+        return new Tag(tagValue, TagType.Opening);
+    }
+
+    public static boolean isTag(String maybeTag) {
+        return maybeTag.startsWith("<");
+    }
 
     public String getValue() {
         return this.value;
@@ -21,8 +40,12 @@ class Tag {
     public TagType getType() {
         return this.type;
     }
-}
 
+    public String toString() {
+        return switch (this.type) {
+            case Closing -> String.format("</%s>", this.value);
+            case Opening -> String.format("<%s>", this.value);
+        };
     }
 }
 
