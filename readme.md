@@ -12,7 +12,7 @@ mentioning, however, that this solution is limited to one single element per-lin
 ## The algorithm
 The algorithm is represented by the sequence diagram below.
 
-![Algorithm](https://i.imgur.com/oVHzAxW.png "HTML Analyzer Algorithm")
+![Algorithm](https://i.imgur.com/jwoAuxf.png "HTML Analyzer Algorithm")
 
 ## Operation Contracts
 The required operations used within the diagram are described below:
