@@ -71,6 +71,7 @@ class Tag {
 
 class DomTracker {
     private final Deque<Tag> tagStack;
+    private boolean noAttemptsToCloseUndefinedOpening = true;
 
     public DomTracker() {
         this.tagStack = new ArrayDeque<>();
@@ -82,13 +83,24 @@ class DomTracker {
             return;
         }
 
-        if (!lastTag.getValue().equals(tag.getValue())) return;
+        Tag lastTag = this.tagStack.peekLast();
 
-        tagStack.removeLast();
+        // dom stack cannot proceed without opened tags in the stack...
+        // what would it even be closing?
+        if (lastTag == null || !lastTag.getValue().equals(tag.getValue())) {
+            this.noAttemptsToCloseUndefinedOpening = false;
+            return;
+        }
+
+        this.tagStack.removeLast();
+    }
+
+    public int stackedTags() {
+        return this.tagStack.size();
     }
 
     public boolean domIsWellFormed() {
-        return !this.tagStack.isEmpty();
+        return this.tagStack.isEmpty() && this.noAttemptsToCloseUndefinedOpening;
     }
 }
 
