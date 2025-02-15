@@ -10,6 +10,26 @@ final public class HtmlAnalyzer {
     }
 }
 
+enum TagType {
+    Closing,
+    Opening,
+}
+
+enum ErrorResponse {
+    HttpError("URL connection error"),
+    HTMLError("malformed HTML");
+
+    private final String message;
+
+    ErrorResponse(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+}
+
 class Tag {
     private final String value;
     private final TagType type;
