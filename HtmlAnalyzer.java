@@ -1,5 +1,8 @@
-import java.util.List;
-import java.util.Optional;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.*;
 
 final public class HtmlAnalyzer {
     public static void main(String[] args) {
@@ -24,11 +27,13 @@ class Tag {
 }
 
 class DomTracker {
-    private List<Tag> tagStack;
+    private final Deque<Tag> tagStack;
+
+    public DomTracker() {
+        this.tagStack = new ArrayDeque<>();
+    }
 
     public void track(Tag tag) {
-        Tag lastTag = this.tagStack.getLast();
-
         if (tag.getType().equals(TagType.Opening)) {
             this.tagStack.add(tag);
             return;
