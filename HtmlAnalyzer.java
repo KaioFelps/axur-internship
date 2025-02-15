@@ -20,18 +20,6 @@ class Tag {
     }
 }
 
-enum TagType {
-    Closing,
-    Opening,
-}
-
-class Fetcher<T> {
-    private final String url;
-    private Optional<T> value;
-
-    public Fetcher(String url) {
-        this.url = url;
-        this.value = Optional.empty();
     }
 }
 
@@ -53,5 +41,38 @@ class DomTracker {
 
     public boolean domIsWellFormed() {
         return !this.tagStack.isEmpty();
+    }
+}
+
+class Fetcher {
+    private final String url;
+    private String value;
+
+    public Fetcher(String url) {
+        this.url = url;
+    }
+
+    public void fetch() {
+        HttpClient client = HttpClient.newBuilder().build();
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(this.url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).get();
+
+            if (response.statusCode() != 200) {
+                return;
+            }
+
+            this.value = response.body();
+        } catch (Exception exception) {
+            return;
+        }
+    }
+
+    public Optional<String> getValue() {
+        return Optional.ofNullable(this.value);
     }
 }
