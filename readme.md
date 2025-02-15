@@ -9,6 +9,18 @@ To solve the problem, one simple solution is to stack each tag as it's opened. T
 corresponding HTML tag from the stack. This way, even unindented structures can be correctly traversed. It worth
 mentioning, however, that this solution is limited to one single element per-line (be it a tag or a text node).
 
+## Running
+
+**1st step:** compile the program:
+```bash
+javac ./HtmlAnalyzer.java
+```
+
+**2nd step:** run it!
+```bash
+java HtmlAnalyzer "<URL>"
+```
+
 ## The algorithm
 The algorithm is represented by the sequence diagram below.
 
