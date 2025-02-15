@@ -36,7 +36,7 @@ public final class HtmlAnalyzer {
                 continue;
             }
 
-            int depth = tracker.stackedTags();
+            int depth = tracker.stackSize();
 
             if (depth > maxDepth) {
                 deepestText = lineContent.strip();
@@ -135,7 +135,7 @@ class DomTracker {
         this.tagStack.removeLast();
     }
 
-    public int stackedTags() {
+    public int stackSize() {
         return this.tagStack.size();
     }
 
